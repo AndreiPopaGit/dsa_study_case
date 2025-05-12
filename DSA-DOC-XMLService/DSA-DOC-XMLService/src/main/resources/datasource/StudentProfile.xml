@@ -1,0 +1,143 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<StudentProfiles>
+    <StudentProfile>
+        <StudentId>1</StudentId>
+        <Phone>+40728892359</Phone>
+        <EmergencyContact>Eva Vlad</EmergencyContact>
+        <Status>Active</Status>
+        <Scholarship>500</Scholarship>
+    </StudentProfile>
+    <StudentProfile>
+        <StudentId>2</StudentId>
+        <Phone>+40759019616</Phone>
+        <EmergencyContact>Bob Stan</EmergencyContact>
+        <Status>On Leave</Status>
+        <Scholarship>1000</Scholarship>
+    </StudentProfile>
+    <StudentProfile>
+        <StudentId>3</StudentId>
+        <Phone>+40799699292</Phone>
+        <EmergencyContact>Dan Stan</EmergencyContact>
+        <Status>On Leave</Status>
+        <Scholarship>1000</Scholarship>
+    </StudentProfile>
+    <StudentProfile>
+        <StudentId>4</StudentId>
+        <Phone>+40733892121</Phone>
+        <EmergencyContact>George Georgescu</EmergencyContact>
+        <Status>On Leave</Status>
+        <Scholarship>1000</Scholarship>
+    </StudentProfile>
+    <StudentProfile>
+        <StudentId>5</StudentId>
+        <Phone>+40717086182</Phone>
+        <EmergencyContact>Eva Vlad</EmergencyContact>
+        <Status>Suspended</Status>
+        <Scholarship>500</Scholarship>
+    </StudentProfile>
+    <StudentProfile>
+        <StudentId>6</StudentId>
+        <Phone>+40762602459</Phone>
+        <EmergencyContact>Ioana Ionescu</EmergencyContact>
+        <Status>On Leave</Status>
+        <Scholarship>500</Scholarship>
+    </StudentProfile>
+    <StudentProfile>
+        <StudentId>7</StudentId>
+        <Phone>+40741060668</Phone>
+        <EmergencyContact>Clara Ionescu</EmergencyContact>
+        <Status>On Leave</Status>
+        <Scholarship>500</Scholarship>
+    </StudentProfile>
+    <StudentProfile>
+        <StudentId>8</StudentId>
+        <Phone>+40762574563</Phone>
+        <EmergencyContact>Dan Radu</EmergencyContact>
+        <Status>Suspended</Status>
+        <Scholarship>1000</Scholarship>
+    </StudentProfile>
+    <StudentProfile>
+        <StudentId>9</StudentId>
+        <Phone>+40751160667</Phone>
+        <EmergencyContact>John Toma</EmergencyContact>
+        <Status>Suspended</Status>
+        <Scholarship>1000</Scholarship>
+    </StudentProfile>
+    <StudentProfile>
+        <StudentId>10</StudentId>
+        <Phone>+40744732323</Phone>
+        <EmergencyContact>Florin Radu</EmergencyContact>
+        <Status>Suspended</Status>
+        <Scholarship>0</Scholarship>
+    </StudentProfile>
+    <StudentProfile>
+        <StudentId>11</StudentId>
+        <Phone>+40745337773</Phone>
+        <EmergencyContact>Bob Ionescu</EmergencyContact>
+        <Status>Active</Status>
+        <Scholarship>500</Scholarship>
+    </StudentProfile>
+    <StudentProfile>
+        <StudentId>12</StudentId>
+        <Phone>+40720647797</Phone>
+        <EmergencyContact>George Vlad</EmergencyContact>
+        <Status>Suspended</Status>
+        <Scholarship>1000</Scholarship>
+    </StudentProfile>
+    <StudentProfile>
+        <StudentId>13</StudentId>
+        <Phone>+40784794281</Phone>
+        <EmergencyContact>Bob Dumitrescu</EmergencyContact>
+        <Status>Active</Status>
+        <Scholarship>1000</Scholarship>
+    </StudentProfile>
+    <StudentProfile>
+        <StudentId>14</StudentId>
+        <Phone>+40723319373</Phone>
+        <EmergencyContact>Clara Stan</EmergencyContact>
+        <Status>Suspended</Status>
+        <Scholarship>0</Scholarship>
+    </StudentProfile>
+    <StudentProfile>
+        <StudentId>15</StudentId>
+        <Phone>+40767636961</Phone>
+        <EmergencyContact>Eva Radu</EmergencyContact>
+        <Status>On Leave</Status>
+        <Scholarship>0</Scholarship>
+    </StudentProfile>
+    <StudentProfile>
+        <StudentId>16</StudentId>
+        <Phone>+40761917871</Phone>
+        <EmergencyContact>Clara Stan</EmergencyContact>
+        <Status>On Leave</Status>
+        <Scholarship>1000</Scholarship>
+    </StudentProfile>
+    <StudentProfile>
+        <StudentId>17</StudentId>
+        <Phone>+40725506981</Phone>
+        <EmergencyContact>Dan Stan</EmergencyContact>
+        <Status>Suspended</Status>
+        <Scholarship>1000</Scholarship>
+    </StudentProfile>
+    <StudentProfile>
+        <StudentId>18</StudentId>
+        <Phone>+40799776917</Phone>
+        <EmergencyContact>Eva Radu</EmergencyContact>
+        <Status>Suspended</Status>
+        <Scholarship>500</Scholarship>
+    </StudentProfile>
+    <StudentProfile>
+        <StudentId>19</StudentId>
+        <Phone>+40714216410</Phone>
+        <EmergencyContact>Florin Popescu</EmergencyContact>
+        <Status>Suspended</Status>
+        <Scholarship>0</Scholarship>
+    </StudentProfile>
+    <StudentProfile>
+        <StudentId>20</StudentId>
+        <Phone>+40743336313</Phone>
+        <EmergencyContact>Florin Dumitrescu</EmergencyContact>
+        <Status>Suspended</Status>
+        <Scholarship>0</Scholarship>
+    </StudentProfile>
+</StudentProfiles>
