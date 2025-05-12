@@ -12,6 +12,7 @@
         <module name="DSA-SQL-JDBCService" />
         <module name="DSA-DOC-XMLService" />
         <module name="DSA-SparkSQL-Service" />
+        <module name="DSA-SQL-JPAService" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="17" />
@@ -22,6 +23,7 @@
       <module name="DSA-DOC-XMLService" options="-parameters" />
       <module name="DSA-NoSQL-MongoDBService" options="-parameters" />
       <module name="DSA-SQL-JDBCService" options="-parameters" />
+      <module name="DSA-SQL-JPAService" options="-parameters" />
       <module name="DSA-SparkSQL-Service" options="-parameters" />
     </option>
   </component>

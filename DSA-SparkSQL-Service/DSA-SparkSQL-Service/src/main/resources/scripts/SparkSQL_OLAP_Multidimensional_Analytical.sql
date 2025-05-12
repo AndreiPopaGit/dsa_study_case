@@ -283,3 +283,95 @@ FROM OLAP_DIM_STUDENTS s
     LATERAL VIEW explode(p.expertise) AS exp
 ORDER BY s.studentId, matchedSkill;
 
+-- JPA -----------------------------------------
+
+-- === BASE INPUT VIEWS (FROM ORACLE JPA REST) ===
+
+DROP VIEW IF EXISTS professors_view;
+CREATE OR REPLACE TEMP VIEW professors_view AS
+WITH json_view AS (
+    SELECT from_json(json_raw.data,
+        'ARRAY<STRUCT<professorId: BIGINT, name: STRING, email: STRING, deptId: BIGINT>>') array
+    FROM (
+        SELECT java_method(
+            'org.spark.service.rest.QueryRESTDataService',
+            'getRESTDataDocument',
+            'http://localhost:8091/DSA_SQL_JPAService/rest/oracle/ProfessorsView'
+        ) AS data
+    ) json_raw
+)
+SELECT v.*
+FROM json_view LATERAL VIEW explode(json_view.array) AS v;
+
+DROP VIEW IF EXISTS departments_view;
+CREATE OR REPLACE TEMP VIEW departments_view AS
+WITH json_view AS (
+    SELECT from_json(json_raw.data,
+        'ARRAY<STRUCT<deptId: BIGINT, name: STRING, building: STRING>>') array
+    FROM (
+        SELECT java_method(
+            'org.spark.service.rest.QueryRESTDataService',
+            'getRESTDataDocument',
+            'http://localhost:8091/DSA_SQL_JPAService/rest/oracle/DepartmentsView'
+        ) AS data
+    ) json_raw
+)
+SELECT v.*
+FROM json_view LATERAL VIEW explode(json_view.array) AS v;
+
+DROP VIEW IF EXISTS classrooms_view;
+CREATE OR REPLACE TEMP VIEW classrooms_view AS
+WITH json_view AS (
+    SELECT from_json(json_raw.data,
+        'ARRAY<STRUCT<roomId: BIGINT, building: STRING, roomNumber: STRING, capacity: INT>>') array
+    FROM (
+        SELECT java_method(
+            'org.spark.service.rest.QueryRESTDataService',
+            'getRESTDataDocument',
+            'http://localhost:8091/DSA_SQL_JPAService/rest/oracle/ClassroomsView'
+        ) AS data
+    ) json_raw
+)
+SELECT v.*
+FROM json_view LATERAL VIEW explode(json_view.array) AS v;
+
+
+-- === OLAP VIEW: Average Classroom Capacity by Building ===
+DROP VIEW IF EXISTS OLAP_VIEW_AVG_CLASSROOM_CAPACITY_BY_BUILDING;
+CREATE OR REPLACE TEMP VIEW OLAP_VIEW_AVG_CLASSROOM_CAPACITY_BY_BUILDING AS
+SELECT
+    building,
+    ROUND(AVG(capacity), 2) AS avgCapacity,
+    COUNT(*) AS totalRooms
+FROM classrooms_view
+GROUP BY building
+ORDER BY avgCapacity DESC;
+
+-- === OLAP VIEW: Professor Distribution by Department and Building (with GROUPING SETS) ===
+DROP VIEW IF EXISTS OLAP_VIEW_PROFESSOR_DISTRIBUTION_GROUPED;
+CREATE OR REPLACE TEMP VIEW OLAP_VIEW_PROFESSOR_DISTRIBUTION_GROUPED AS
+SELECT
+    d.name AS departmentName,
+    d.building AS departmentBuilding,
+    COUNT(p.professorId) AS totalProfessors
+FROM professors_view p
+         JOIN departments_view d ON p.deptId = d.deptId
+GROUP BY GROUPING SETS (
+    (d.name, d.building),
+    (d.name),
+    ()
+    )
+ORDER BY departmentName NULLS LAST;
+
+-- === OLAP VIEW: Professor List by Department (Aggregated Names) ===
+DROP VIEW IF EXISTS OLAP_VIEW_PROFESSOR_LIST_BY_DEPARTMENT;
+CREATE OR REPLACE TEMP VIEW OLAP_VIEW_PROFESSOR_LIST_BY_DEPARTMENT AS
+SELECT
+    d.name AS departmentName,
+    COUNT(p.professorId) AS totalProfessors,
+    COLLECT_LIST(p.name) AS professorNames
+FROM professors_view p
+         JOIN departments_view d ON p.deptId = d.deptId
+GROUP BY d.name
+ORDER BY totalProfessors DESC;
+
