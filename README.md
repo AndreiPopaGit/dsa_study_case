@@ -172,15 +172,10 @@ Inserted via Mongo Compass (~20 documents each).
 
 ### 🟠 Oracle – DSA_SQL_JPAService (port `8091`)
 **Data Views:**
-- [`SalesView`](http://localhost:8091/DSA_SQL_JPAService/rest/sales/SalesView)
-- [`ProductView`](http://localhost:8091/DSA_SQL_JPAService/rest/sales/ProductView)
-- [`InvoiceView`](http://localhost:8091/DSA_SQL_JPAService/rest/sales/InvoiceView)
-- [`InvoicesSalesView`](http://localhost:8091/DSA_SQL_JPAService/rest/sales/InvoicesSalesView)
+http://localhost:9990/DSA-SparkSQL-Service/rest/view/{VIEW_NAME}
 
 **SparkSQL Views:**
-- [`sales_view`](http://localhost:9990/DSA-SparkSQL-Service/rest/view/sales_view)
-- [`products_view`](http://localhost:9990/DSA-SparkSQL-Service/rest/view/products_view)
-- [`invoices_view`](http://localhost:9990/DSA-SparkSQL-Service/rest/view/invoices_view)
+- [`Template`](http://localhost:9990/DSA-SparkSQL-Service/rest/view/)
 
 ---
 
