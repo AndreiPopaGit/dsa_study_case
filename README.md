@@ -39,35 +39,133 @@ REST endpoints were configured using SpringBoot:
 
 ---
 
-## 🟠 JPA Oracle 21c XE Integration
+### 🔵 JPA Oracle Service (Spring Boot)
 
-This integration uses SpringBoot JPA with native SQL to expose complex business views via Oracle XE.
+**Base URL:**
+[http://localhost:8091/DSA\_SQL\_JPAService/rest/oracle](http://localhost:8091/DSA_SQL_JPAService/rest/oracle)
 
-### 1. Java Classes
+#### 🔹 Health Check
 
-- **SalesView.java** – POJO combining invoice, line items, and product details.
-- **SalesViewBuilderSQL.java** – Native SQL query executed via JPA.
+* `GET /ping`  → Check if the JPA service is running
 
-```sql
-SELECT i.invoice_Id, i.cust_Id, i.cust_Name, i.invoice_Date, 
-       p.product_Code, p.prod_Name, l.quantity, l.unit_Price 
-FROM INVOICES i 
-JOIN INVOICE_LINE_ITEMS l ON i.invoice_id = l.invoice_id 
-JOIN PRODUCTS p ON l.product_code = p.product_code
+```
+http://localhost:8091/DSA_SQL_JPAService/rest/oracle/ping
 ```
 
-### 2. REST Endpoints (JPA Service)
+#### 📘 Professors Data
 
-- `/sales/SalesView` → Returns full sales transactional info.
-- `/sales/ProductView` → Product metadata exposed.
-- `/sales/InvoiceView` → Invoices from repository.
-- `/sales/InvoicesSalesView` → Custom repository method for summary.
+* `GET /ProfessorsView`  → List of professors with: `professorId`, `name`, `email`, `deptId`
 
-### 3. SparkSQL Views
+```
+http://localhost:8091/DSA_SQL_JPAService/rest/oracle/ProfessorsView
+```
 
-- **sales_view** – Exposes SalesView for analytics
-- **products_view** – Exposes product info (prodName, category, price)
-- **invoices_view** – Basic invoice metadata
+#### 🏢 Departments Data
+
+* `GET /DepartmentsView`  → List of departments with: `deptId`, `name`, `building`
+
+```
+http://localhost:8091/DSA_SQL_JPAService/rest/oracle/DepartmentsView
+```
+
+#### 🏫 Classrooms Data
+
+* `GET /ClassroomsView`  → List of classrooms with: `roomId`, `building`, `roomNumber`, `capacity`
+
+```
+http://localhost:8091/DSA_SQL_JPAService/rest/oracle/ClassroomsView
+```
+
+---
+
+### 🔶 SparkSQL OLAP Service
+
+**Base URL:**
+[http://localhost:9990/DSA-SparkSQL-Service/rest](http://localhost:9990/DSA-SparkSQL-Service/rest)
+
+#### 🔹 Health Check
+
+* `GET /ping`  → Confirm SparkSQL REST service is up
+
+```
+http://localhost:9990/DSA-SparkSQL-Service/rest/ping
+```
+
+#### 📊 Query Spark Views (results)
+
+* `GET /view/{VIEW_NAME}`  → Return full JSON result of the given Spark view
+
+**Examples:**
+
+```
+http://localhost:9990/DSA-SparkSQL-Service/rest/view/OLAP_VIEW_AVG_CLASSROOM_CAPACITY_BY_BUILDING
+http://localhost:9990/DSA-SparkSQL-Service/rest/view/OLAP_VIEW_PROFESSOR_DISTRIBUTION_GROUPED
+http://localhost:9990/DSA-SparkSQL-Service/rest/view/OLAP_VIEW_PROFESSOR_LIST_BY_DEPARTMENT
+```
+
+#### 📝 View Schema Only
+
+* `GET /STRUCT/{VIEW_NAME}`  → Return SQL schema for a given view
+
+**Examples:**
+
+```
+http://localhost:9990/DSA-SparkSQL-Service/rest/STRUCT/OLAP_VIEW_AVG_CLASSROOM_CAPACITY_BY_BUILDING
+http://localhost:9990/DSA-SparkSQL-Service/rest/STRUCT/OLAP_VIEW_PROFESSOR_DISTRIBUTION_GROUPED
+http://localhost:9990/DSA-SparkSQL-Service/rest/STRUCT/OLAP_VIEW_PROFESSOR_LIST_BY_DEPARTMENT
+```
+
+---
+
+## 📊 OLAP Queries Summary
+
+### 1. `OLAP_VIEW_AVG_CLASSROOM_CAPACITY_BY_BUILDING`
+
+**Goal**: Calculate the average number of seats per classroom per building.
+
+```sql
+SELECT
+  building,
+  ROUND(AVG(capacity), 2) AS avgCapacity,
+  COUNT(*) AS totalRooms
+FROM classrooms_view
+GROUP BY building
+ORDER BY avgCapacity DESC;
+```
+
+### 2. `OLAP_VIEW_PROFESSOR_DISTRIBUTION_GROUPED`
+
+**Goal**: Show number of professors per department, grouped with and without building info.
+
+```sql
+SELECT
+  d.name AS departmentName,
+  d.building AS departmentBuilding,
+  COUNT(p.professorId) AS totalProfessors
+FROM professors_view p
+JOIN departments_view d ON p.deptId = d.deptId
+GROUP BY GROUPING SETS (
+  (d.name, d.building),
+  (d.name),
+  ()
+)
+ORDER BY departmentName NULLS LAST;
+```
+
+### 3. `OLAP_VIEW_PROFESSOR_LIST_BY_DEPARTMENT`
+
+**Goal**: Aggregate a list of professor names per department.
+
+```sql
+SELECT
+  d.name AS departmentName,
+  COUNT(p.professorId) AS totalProfessors,
+  COLLECT_LIST(p.name) AS professorNames
+FROM professors_view p
+JOIN departments_view d ON p.deptId = d.deptId
+GROUP BY d.name
+ORDER BY totalProfessors DESC;
+```
 
 ---
 
